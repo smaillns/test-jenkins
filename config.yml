@@ -1,0 +1,11 @@
+#DB_URIS:
+#  "background:Base": postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+#
+#AMQP_URI: amqp://${RABBITMQ_URL}//
+#
+#serializer: pickle
+
+DB_URIS:
+    "installation_requests:Base": postgresql://postgres:password@localhost:5433/installation_requests_DB
+
+AMQP_URI: amqp://guest:guest@localhost
