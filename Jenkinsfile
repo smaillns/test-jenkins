@@ -6,3 +6,4 @@ pipeline {
                 sh 'python --version'
             }
         }
+}
