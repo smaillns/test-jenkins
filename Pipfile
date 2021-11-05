@@ -5,9 +5,25 @@ name = "pypi"
 
 [packages]
 nameko =            "==3.0.0-rc9"
+nameko-sqlalchemy=  "==1.5.0"
+alembic =           "==1.6.5"
+marshmallow=        "==3.14"
+sqlalchemy=         "==1.4.22"
+psycopg2-binary=    "==2.9.1"
+marshmallow-sqlalchemy = "*"
+
+[dev-packages]
+pytest=             "==4.5.0"
+coverage=           "==4.5.3"
+flake8=             "==3.7.7"
+pre-commit=            "==2.14.0"
+pydocstyle=            "==6.1.1"
+pylint=                "==2.9.6"
+mypy=                  "==0.910"
+python-dotenv=         "==0.19.0"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"
 
 [pipenv]
 allow_prereleases = true

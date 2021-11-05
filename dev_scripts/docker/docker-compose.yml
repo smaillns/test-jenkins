@@ -1,0 +1,48 @@
+version: '3'
+services:
+    installation-requests-pg:
+       image: postgres:13
+       restart: unless-stopped
+       environment:
+            POSTGRES_PASSWORD: ${POSTGRES_ROOT_PASSWORD}
+            POSTGRES_SIMPLE_USER: ${POSTGRES_SIMPLE_USER}
+            POSTGRES_SIMPLE_USER_PASSWORD: ${POSTGRES_SIMPLE_USER_PASSWORD}
+            POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+            POSTGRES_DB_UTEST_NAME: ${POSTGRES_DB_UTEST_NAME}
+            #we are creating multiple db's do not use this. MYSQL_DATABASE: "123456" #${MYSQL_ROOT_PASSWORD}
+       ports:
+            - "15436:5432"
+       volumes:
+         - ./initDB:/docker-entrypoint-initdb.d
+
+    installation-requests-app:
+      build:
+        context: ../../
+        dockerfile: dev_scripts/docker/Dockerfile
+      volumes:
+        - ../../:/mnt/application
+      environment:
+          DB_USER: ${POSTGRES_SIMPLE_USER}
+          DB_PASSWORD: ${POSTGRES_SIMPLE_USER_PASSWORD}
+          DB_NAME: ${POSTGRES_DB_NAME}
+          DB_HOST: "installation-requests-pg"
+          RABBITMQ_URL: "127.0.0.1:5672"
+
+      command:
+        - "wait-for-it -p 5432 -h installation-requests-pg -t 30 && alembic upgrade head"
+
+    pgadmin4:
+       image: dpage/pgadmin4
+       restart: always
+       ports:
+            - "8887:80"
+       environment:
+          PGADMIN_DEFAULT_EMAIL: "test@myem.fr"
+          PGADMIN_DEFAULT_PASSWORD: "passWD!"
+
+       volumes:
+         - pgadmin4-data:/var/lib/pgadmin
+
+
+volumes:
+    pgadmin4-data:
